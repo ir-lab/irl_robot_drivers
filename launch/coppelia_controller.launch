@@ -1,0 +1,32 @@
+<launch>
+    <arg name="ur5l_joint_list" default="['UR5l_joint1', 'UR5l_joint2', 'UR5l_joint3', 'UR5l_joint4', 'UR5l_joint5', 'UR5l_joint6']"/>
+    <arg name="ur5c_joint_list" default="['UR5c_joint1', 'UR5c_joint2', 'UR5c_joint3', 'UR5c_joint4', 'UR5c_joint5', 'UR5c_joint6']"/>
+
+    <node name="coppelia_controller_node" pkg="irl_robot_drivers" type="coppelia_controller" output="screen">
+        <param name="num_robots" value="2" />
+        <!-- For ros kinetic, set these two rosparams: -->
+        <!-- <rosparam param="joint_list1" subst_value="True">$(arg ur5l_joint_list)</rosparam> -->
+        <!-- <rosparam param="joint_list2" subst_value="True">$(arg ur5c_joint_list)</rosparam> -->
+
+        <param name="out_topic1" value="/robot/ur5l/control" />
+        <param name="in_topic1" value="/robot/ur5l/state" />
+        <!-- For ros kinetic, unset this joint_list -->
+        <param name="joint_list1" type="yaml" value="$(arg ur5l_joint_list)" />
+        <param name="ee_target_joint1" value="UR5l_ik_dummy" />
+        <param name="ee_joint1" value="IK_tip_l" />
+
+        <param name="out_topic2" value="/robot/ur5c/control" />
+        <param name="in_topic2" value="/robot/ur5c/state" />
+        <!-- For ros kinetic, unset this joint list -->
+        <param name="joint_list2" type="yaml" value="$(arg ur5c_joint_list)" />
+        <param name="ee_target_joint2" value="UR5c_ik_dummy" />
+        <param name="ee_joint2" value="IK_tip_c" />
+
+        <!-- @todo: tie this into the parameter in interaction.yaml -->
+        <param name="demo_status_topic" value="/interaction_demo_status" />
+        <param name="demo_reset_topic" value="/interaction_demo_reset" />
+        <param name="in_frequency" value="100" />
+        <param name="test_robot" value="1" />
+
+    </node>
+</launch>
